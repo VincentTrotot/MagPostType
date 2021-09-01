@@ -1,33 +1,12 @@
-<input type="hidden" name="vt-conseils_municipaux-nonce" id="vt-conseils_municipaux-nonce" value="{{ nonce}}" />
-<p><strong>Conseil municipal</strong><br /></p>
-<div>
-    {# Ordre du jour #}
-    <p class="cm-filename-ordre-du-jour">{{ post.ordre_du_jour.name | default('Ordre du jour : ')}}</p>
-    <p><button type="button" class="button button-primary odj_upload">Choisir un document PDF</button></p>
-    <p><button type="button" class="components-button editor-post-trash is-tertiary is-destructive odj_delete">Supprimer le document</button></p>
+<input type="hidden" name="vt_kiosque-nonce" id="vt_kiosque-nonce" value="{{ nonce}}" />
+<p><strong>Magazine</strong><br /></p>
 
-    <input class="url-ordre-du-jour" type="hidden" name="url-ordre-du-jour" size="60" value="{{ post.ordre_du_jour.url }}">
-    <input class="name-ordre-du-jour" type="hidden" name="name-ordre-du-jour" size="60" value="{{ post.ordre_du_jour.name }}">
-</div>
-<hr>
-<div>
-    {# Compte rendu audio #}
-    <p class="cm-filename-audio">{{ post.audio.name | default('Compte rendu audio :') }}</p>
-    <p><button type="button" class="button button-primary audio_upload">Choisir un document audio</button></p>
-    <p><button type="button" class="components-button editor-post-trash is-tertiary is-destructive audio_delete">Supprimer le document</button></p>
-
-    <input class="url-audio" type="hidden" name="url-audio" size="60" value="{{ post.audio.url }}">
-    <input class="name-audio" type="hidden" name="name-audio" size="60" value="{{ post.audio.name }}">
-</div>
-<hr>
-<div>
-    {# Compte rendu PDF #}
-    <p class="cm-filename-pdf">{{ post.pdf.name | default('Compte rendu PDF') }}</p>
-    <p><button type="button" class="button button-primary pdf_upload">Choisir un document PDF</button></p>
+    <p class="mag-filename">{{ post.name | default('Aucun document choisi') }}</p>
+    <p><button type="button" class="button button-primary pdf_upload">Choisir un document</button></p>
     <p><button type="button" class="components-button editor-post-trash is-tertiary is-destructive pdf_delete">Supprimer le document</button></p>
 
-    <input class="url-pdf" type="hidden" name="url-pdf" size="60" value="{{ post.pdf.url }}">
-    <input class="name-pdf" type="hidden" name="name-pdf" size="60" value="{{ post.pdf.name }}">
+    <input class="url" type="hidden" name="url" size="60" value="{{ post.url }}">
+    <input class="name" type="hidden" name="name" size="60" value="{{ post.name }}">
 </div>
 <script>
 jQuery(document).ready(function($) {
@@ -43,9 +22,9 @@ jQuery(document).ready(function($) {
         })
         .on('select', function() {
             var attachment = custom_uploader.state().get('selection').first().toJSON();
-            $('.url-pdf').val(attachment.url);
-            $('.name-pdf').val(attachment.filename);
-            $('.cm-filename-pdf').html(attachment.filename);
+            $('.url').val(attachment.url);
+            $('.name').val(attachment.filename);
+            $('.mag-filename').html(attachment.filename);
 
         })
         .open();
@@ -53,64 +32,10 @@ jQuery(document).ready(function($) {
 
     $('.pdf_delete').click(function(e) {
         e.preventDefault();
-        $('.url-pdf').val('');
-        $('.name-pdf').val('');
-        $('.cm-filename-pdf').html('Compte rendu PDF :');
+        $('.url').val('');
+        $('.name').val('');
+        $('.mag-filename').html('Aucun document choisi');
     });
 
-    $('.audio_upload').click(function(e) {
-        e.preventDefault();
-
-        var custom_uploader = wp.media({
-            title: 'Choisir un document',
-            button: {
-                text: 'Choisir un document'
-            },
-            multiple: false  // Set this to true to allow multiple files to be selected
-        })
-        .on('select', function() {
-            var attachment = custom_uploader.state().get('selection').first().toJSON();
-            $('.url-audio').val(attachment.url);
-            $('.name-audio').val(attachment.filename);
-            $('.cm-filename-audio').html(attachment.filename);
-
-        })
-        .open();
-    });
-
-    $('.audio_delete').click(function(e) {
-        e.preventDefault();
-        $('.url-audio').val('');
-        $('.name-audio').val('');
-        $('.cm-filename-audio').html('Compte rendu audio :');
-
-    });
-
-    $('.odj_upload').click(function(e) {
-        e.preventDefault();
-
-        var custom_uploader = wp.media({
-            title: 'Choisir un document',
-            button: {
-                text: 'Choisir un document'
-            },
-            multiple: false  // Set this to true to allow multiple files to be selected
-        })
-        .on('select', function() {
-            var attachment = custom_uploader.state().get('selection').first().toJSON();
-            $('.url-ordre-du-jour').val(attachment.url);
-            $('.name-ordre-du-jour').val(attachment.filename);
-            $('.cm-filename-ordre-du-jour').html(attachment.filename);
-
-        })
-        .open();
-    });
-
-    $('.odj_delete').click(function(e) {
-        e.preventDefault();
-        $('.url-ordre-du-jour').val('');
-        $('.name-ordre-du-jour').val('');
-        $('.cm-filename-ordre-du-jour').html('Ordre du jour :');
-    });
 });
 </script>
